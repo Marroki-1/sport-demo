@@ -1,101 +1,283 @@
-import { users, challenges, badges, events } from "../data/fakeData";
+import { useState, useEffect } from "react";
+import {
+  BarChart, Bar, LineChart, Line,
+  XAxis, YAxis, Tooltip, ResponsiveContainer,
+  CartesianGrid
+} from "recharts";
 
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet.heat";
+import AppLogo from "../components/AppLogo";
+
+import "./Dashboard.css";
+
+/* ----------------------------------------------------- */
+/* ACTIVITÉS */
+/* ----------------------------------------------------- */
+const activities = [
+  { id: "Running", icon: "🏃‍♂️" },
+  { id: "Marche", icon: "🚶‍♂️" },
+  { id: "Randonnée", icon: "🥾" },
+];
+
+/* ----------------------------------------------------- */
+/* DONNÉES FAKE PAR ACTIVITÉ */
+/* ----------------------------------------------------- */
+const weeklyDataSet = {
+  Running: [
+    { day: "Lun", distance: 4 },
+    { day: "Mar", distance: 6 },
+    { day: "Mer", distance: 3 },
+    { day: "Jeu", distance: 7 },
+    { day: "Ven", distance: 2 },
+    { day: "Sam", distance: 10 },
+    { day: "Dim", distance: 6 },
+  ],
+  Marche: [
+    { day: "Lun", distance: 2 },
+    { day: "Mar", distance: 3 },
+    { day: "Mer", distance: 1 },
+    { day: "Jeu", distance: 4 },
+    { day: "Ven", distance: 2 },
+    { day: "Sam", distance: 5 },
+    { day: "Dim", distance: 2 },
+  ],
+  Randonnée: [
+    { day: "Lun", distance: 0 },
+    { day: "Mar", distance: 5 },
+    { day: "Mer", distance: 0 },
+    { day: "Jeu", distance: 12 },
+    { day: "Ven", distance: 0 },
+    { day: "Sam", distance: 18 },
+    { day: "Dim", distance: 9 },
+  ],
+};
+
+const monthlyDataSet = {
+  Running: [
+    { week: "S1", km: 18 },
+    { week: "S2", km: 22 },
+    { week: "S3", km: 15 },
+    { week: "S4", km: 25 },
+  ],
+  Marche: [
+    { week: "S1", km: 6 },
+    { week: "S2", km: 9 },
+    { week: "S3", km: 4 },
+    { week: "S4", km: 8 },
+  ],
+  Randonnée: [
+    { week: "S1", km: 12 },
+    { week: "S2", km: 4 },
+    { week: "S3", km: 20 },
+    { week: "S4", km: 15 },
+  ],
+};
+
+const statsByActivity = {
+  Running: { distance: 62, speed: 9.3, heart: 150, intensity: 82 },
+  Marche: { distance: 28, speed: 4.7, heart: 105, intensity: 55 },
+  Randonnée: { distance: 54, speed: 5.8, heart: 135, intensity: 70 },
+};
+
+/* ----------------------------------------------------- */
+/* HEATMAP — COMPATIBLE REACT 19 */
+/* ----------------------------------------------------- */
+function HeatmapLayer({ points }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+
+    const heatPts = points.map((p) => [p.lat, p.lng, p.intensity]);
+
+    const heat = window.L.heatLayer(heatPts, {
+      radius: 28,
+      blur: 18,
+      maxZoom: 17,
+      gradient: {
+        0.4: "rgba(255,80,60,0.3)",
+        0.65: "rgba(255,40,40,0.7)",
+        1.0: "rgba(255,0,0,1)"
+      }
+    });
+
+    heat.addTo(map);
+
+    return () => {
+      map.removeLayer(heat);
+    };
+  }, [map, points]);
+
+  return null;
+}
+
+/* ----------------------------------------------------- */
+/* HEATMAP POINTS */
+/* ----------------------------------------------------- */
+const heatmapPoints = Array.from({ length: 60 }).map(() => ({
+  lat: 48.85 + Math.random() * 0.06,
+  lng: 2.29 + Math.random() * 0.06,
+  intensity: Math.random() * 0.7 + 0.3,
+}));
+
+/* ----------------------------------------------------- */
+/* DASHBOARD COMPONENT */
+/* ----------------------------------------------------- */
 function Dashboard() {
-  const currentUser = users[0]; // On affiche Sophie comme utilisateur connecté
-  const nextEvent = events[0];  // Prochain événement
+  const [activity, setActivity] = useState("Running");
+
+  const weeklyData = weeklyDataSet[activity];
+  const monthlyData = monthlyDataSet[activity];
+  const stats = statsByActivity[activity];
 
   return (
-    <div style={{ padding: "20px", paddingBottom: "80px" }}>
-      <h2>Dashboard</h2>
+    <div className="dashboard-page">
 
-      {/* Profil utilisateur */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "15px",
-        marginBottom: "20px",
-        background: "#f4f4f4",
-        padding: "15px",
-        borderRadius: "10px"
-      }}>
-        <img 
-          src={currentUser.avatar} 
-          alt="avatar" 
-          style={{
-            width: "70px",
-            height: "70px",
-            borderRadius: "50%",
-            objectFit: "cover"
-          }}
-        />
-        <div>
-          <h3 style={{ margin: 0 }}>{currentUser.name}</h3>
-          <p style={{ margin: 0 }}>
-            Activité : {currentUser.activity} <br/>
-            Niveau : {currentUser.level}
-          </p>
+{/* LOGO EN HAUT À DROITE */}
+      <AppLogo />
+
+      {/* HEADER */}
+      <header className="dash-header">
+        <h1>Tableau de bord — Rayane</h1>
+        <p>Suivi de vos performances — {activity}</p>
+
+        {/* ACTIVITÉ TABS */}
+        <div className="activity-tabs">
+          {activities.map((act) => (
+            <button
+              key={act.id}
+              className={`activity-tab ${activity === act.id ? "active" : ""}`}
+              onClick={() => setActivity(act.id)}
+            >
+              {act.icon} {act.id}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      {/* GRID */}
+      <div className="dash-grid">
+
+        {/* WEEKLY */}
+        <div className="dash-card">
+          <h3>Activité hebdomadaire</h3>
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={weeklyData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="distance" fill="url(#gradVioletBlue)" radius={[8, 8, 8, 8]} />
+              <defs>
+                <linearGradient id="gradVioletBlue" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#a855f7" />
+                  <stop offset="100%" stopColor="#3b82f6" />
+                </linearGradient>
+              </defs>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* MONTHLY */}
+        <div className="dash-card">
+          <h3>Progression mensuelle</h3>
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart data={monthlyData}>
+              <CartesianGrid stroke="#f0f0f0" />
+              <XAxis dataKey="week" />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="km"
+                stroke="#3b82f6"
+                strokeWidth={3}
+                dot={{ r: 4, stroke: "#a855f7", strokeWidth: 2 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* STATS */}
+        <div className="dash-card stats-card">
+          <h3>Statistiques détaillées</h3>
+
+          <div className="stats-list">
+            <div className="stat-item">
+              <span>Distance totale</span>
+              <b>{stats.distance} km</b>
+            </div>
+            <div className="stat-item">
+              <span>Vitesse moyenne</span>
+              <b>{stats.speed} km/h</b>
+            </div>
+            <div className="stat-item">
+              <span>Fréquence cardiaque</span>
+              <b>{stats.heart} bpm</b>
+            </div>
+            <div className="stat-item">
+              <span>Intensité</span>
+              <b>{stats.intensity}%</b>
+            </div>
+          </div>
+        </div>
+
+        {/* OBJECTIFS */}
+        <div className="dash-card goals-card">
+          <h3>Objectifs</h3>
+
+          <div className="goal">
+            <p>Objectif hebdo : <b>40 km</b></p>
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${(stats.distance / 40) * 100}%` }}></div>
+            </div>
+          </div>
+
+          <div className="goal">
+            <p>Objectif mensuel : <b>120 km</b></p>
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${(stats.distance / 120) * 100}%` }}></div>
+            </div>
+          </div>
+        </div>
+
+        {/* HEATMAP */}
+        <div className="dash-card heatmap-card">
+          <h3>Zones fréquentées</h3>
+
+          <div className="heatmap-map-wrapper">
+            <MapContainer
+              center={[48.8566, 2.3522]}
+              zoom={13}
+              className="heatmap-map"
+            >
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <HeatmapLayer points={heatmapPoints} />
+            </MapContainer>
+          </div>
+        </div>
+
+        {/* EVENTS */}
+        <div className="dash-card">
+          <h3>Événements à venir</h3>
+
+          <ul className="events-list">
+            <li><b>🏃 10km Paris</b> — Dimanche 9h00</li>
+            <li><b>🥾 Rando Versailles</b> — Samedi 14h</li>
+            <li><b>🚶 Marche solidaire</b> — 18 Février</li>
+          </ul>
         </div>
       </div>
 
-      {/* Statistiques */}
-      <div style={{
-        background: "#e9f5ff",
-        padding: "15px",
-        borderRadius: "10px",
-        marginBottom: "20px"
-      }}>
-        <h3>Statistiques de la semaine</h3>
-        <p>Distance parcourue : <b>{currentUser.weeklyDistance} km</b></p>
-      </div>
-
-      {/* Défis en cours */}
-      <div style={{ marginBottom: "20px" }}>
-        <h3>Défis en cours</h3>
-        {challenges.map((c) => (
-          <div key={c.id} style={{
-            background: "#f2f2f2",
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "8px"
-          }}>
-            <p><b>{c.title}</b></p>
-            <div style={{
-              height: "10px",
-              background: "#ddd",
-              borderRadius: "5px"
-            }}>
-              <div style={{
-                width: `${c.progress}%`,
-                height: "100%",
-                background: "#4CAF50",
-                borderRadius: "5px"
-              }}></div>
-            </div>
-            <p style={{ fontSize: "12px" }}>{c.progress}% complété</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Prochain événement */}
-      <div style={{
-        background: "#fff3cd",
-        padding: "15px",
-        borderRadius: "10px",
-        marginBottom: "20px"
-      }}>
-        <h3>Prochain événement</h3>
-        <p><b>{nextEvent.title}</b></p>
-        <p>Date : {nextEvent.date} — {nextEvent.hour}</p>
-        <p>Participants : {nextEvent.participants}</p>
-      </div>
-
-      {/* Badges */}
-      <div style={{ marginBottom: "40px" }}>
-        <h3>Badges</h3>
-        {badges.filter(b => b.earned).map((b) => (
-          <p key={b.id}>🏅 {b.title}</p>
-        ))}
-      </div>
+      {/* CTA */}
+      <button
+        className="dash-map-btn"
+        onClick={() => (window.location.href = "/map")}
+      >
+        Voir la carte
+      </button>
     </div>
   );
 }

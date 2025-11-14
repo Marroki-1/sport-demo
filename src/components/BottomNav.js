@@ -7,7 +7,7 @@ function BottomNav() {
       <Link to="/">🏠</Link>
       <Link to="/map">🗺️</Link>
       <Link to="/communities">👥</Link>
-      <Link to="/challenges">🏅</Link>
+      <Link to="/defis">🏅</Link>
       <Link to="/events">📅</Link>
       <Link to="/profile">⚙️</Link>
     </div>

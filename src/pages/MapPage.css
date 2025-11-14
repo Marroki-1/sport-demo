@@ -1,0 +1,310 @@
+/* ----------------------------------------------------- */
+/* PAGE GLOBALE */
+/* ----------------------------------------------------- */
+.map-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f8f9fb;
+  color: #222;
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------- */
+/* HEADER PREMIUM */
+/* ----------------------------------------------------- */
+.premium-header {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(180, 180, 180, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+}
+
+.premium-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.subtitle {
+  margin-top: 4px;
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+/* ----------------------------------------------------- */
+/* TABS ACTIVITÉ */
+/* ----------------------------------------------------- */
+.activity-tabs {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.activity-tab {
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  transition: 0.25s ease;
+  border: 1px solid rgba(200, 200, 200, 0.35);
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activity-tab .tab-icon {
+  font-size: 1.1rem;
+}
+
+.activity-tab:hover {
+  transform: translateY(-2px);
+}
+
+.activity-tab.active {
+  background: linear-gradient(90deg, #a855f7, #3b82f6);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(90, 30, 180, 0.35);
+}
+
+/* ----------------------------------------------------- */
+/* INFO CARDS */
+/* ----------------------------------------------------- */
+.info-row {
+  margin-top: 15px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.info-glass {
+  padding: 9px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(200, 200, 200, 0.35);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ----------------------------------------------------- */
+/* MAP WRAPPER */
+/* ----------------------------------------------------- */
+.map-wrapper {
+  flex: 1;
+  position: relative;
+  padding: 12px;
+}
+
+.premium-map {
+  height: 100%;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ----------------------------------------------------- */
+/* MARKERS (avec halo neon) */
+/* ----------------------------------------------------- */
+.marker-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.marker-photo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid white;
+}
+
+/* Halo néon vert pour "planned" */
+.halo-planned {
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.8),
+              0 0 20px rgba(34, 197, 94, 0.4);
+}
+
+/* Halo néon rose pour "live" */
+.halo-live {
+  box-shadow: 0 0 10px rgba(236, 72, 153, 0.8),
+              0 0 20px rgba(236, 72, 153, 0.4);
+}
+
+/* ----------------------------------------------------- */
+/* POPUP */
+/* ----------------------------------------------------- */
+.popup-container {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.popup-photo {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.live-text {
+  color: #ec4899;
+  font-weight: bold;
+}
+
+.planned-text {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.join-btn {
+  margin-top: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.join-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ----------------------------------------------------- */
+/* BOUTON FIXE BAS */
+/* ----------------------------------------------------- */
+.floating-start-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  transition: 0.25s ease;
+}
+
+.floating-start-btn:hover {
+  opacity: 0.95;
+}
+
+/* ----------------------------------------------------- */
+/* BOUTONS FLOTTANTS HAUT DROIT */
+/* ----------------------------------------------------- */
+.floating-buttons {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 9999;
+}
+
+.float-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.float-btn:hover {
+  transform: scale(1.1);
+  background: white;
+}
+
+/* ----------------------------------------------------- */
+/* SIDEBAR GAUCHE */
+/* ----------------------------------------------------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px; /* hidden */
+  width: 280px;
+  height: 100vh;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(16px);
+  box-shadow: 5px 0 20px rgba(0,0,0,0.15);
+  transition: 0.4s ease;
+  z-index: 99999;
+  padding: 18px;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.close-btn {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  height: 85vh;
+  padding-right: 6px;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+}
+
+.sidebar-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}

@@ -1,99 +1,107 @@
-import { users } from "../data/fakeData";
+import { useState } from "react";
+import "./Profile.css";
+import { xpStats } from "../data/fakeChallenges";
 
 function Profile() {
-  const currentUser = users[0]; // On utilise Sophie comme utilisateur connecté
+  const [darkMode, setDarkMode] = useState(false);
+  const [notif, setNotif] = useState(true);
+  const [gps, setGps] = useState(true);
 
   return (
-    <div style={{ padding: "20px", paddingBottom: "80px" }}>
-      <h2>Profil</h2>
+    <div className="profile-page">
 
-      {/* Carte Profil */}
-      <div
-        style={{
-          background: "#f4f4f4",
-          padding: "15px",
-          borderRadius: "10px",
-          display: "flex",
-          gap: "15px",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
+      {/* HEADER */}
+      <h1 className="profile-title">Mon Profil</h1>
+
+      {/* PROFILE CARD */}
+      <div className="profile-card glass-card">
         <img
-          src={currentUser.avatar}
-          alt="avatar"
-          style={{
-            width: "80px",
-            height: "80px",
-            borderRadius: "50%",
-            objectFit: "cover",
-          }}
+          src="https://avatars.githubusercontent.com/u/133285228?v=4"
+          className="profile-avatar"
+          alt=""
         />
+        <h2>Rayane Marsli</h2>
+        <p className="profile-city">📍 Brest, France</p>
 
-        <div>
-          <h3 style={{ margin: "0" }}>{currentUser.name}</h3>
-          <p style={{ margin: "5px 0" }}>
-            Activité principale : <b>{currentUser.activity}</b>
-            <br />
-            Niveau : <b>{currentUser.level}</b>
-            <br />
-            Ville : <b>{currentUser.city}</b>
-          </p>
+        <div className="profile-stats">
+          <div>
+            <strong>{xpStats.level}</strong>
+            <span>Niveau</span>
+          </div>
+
+          <div>
+            <strong>{xpStats.xp}</strong>
+            <span>XP</span>
+          </div>
+
+          <div>
+            <strong>8</strong>
+            <span>Badges</span>
+          </div>
+
+          <div>
+            <strong>34</strong>
+            <span>Défis</span>
+          </div>
         </div>
       </div>
 
-      {/* Abonnement */}
-      <div
-        style={{
-          background: "#e9f7ff",
-          padding: "15px",
-          borderRadius: "10px",
-          marginBottom: "20px",
-        }}
-      >
-        <h3>Abonnement</h3>
-        <p style={{ margin: 0 }}>
-          Statut : <b>Premium (démo)</b>
-        </p>
-        <p style={{ margin: "5px 0 0 0" }}>
-          Renouvellement : <b>13/11/2026</b>
-        </p>
+      {/* SETTINGS */}
+      <div className="settings-section">
+
+        <h2>Paramètres</h2>
+
+        <div className="setting glass-card">
+          <span>Notifications</span>
+          <input
+            type="checkbox"
+            checked={notif}
+            onChange={() => setNotif(!notif)}
+          />
+        </div>
+
+        <div className="setting glass-card">
+          <span>Mode sombre</span>
+          <input
+            type="checkbox"
+            checked={darkMode}
+            onChange={() => setDarkMode(!darkMode)}
+          />
+        </div>
+
+        <div className="setting glass-card">
+          <span>Localisation GPS</span>
+          <input
+            type="checkbox"
+            checked={gps}
+            onChange={() => setGps(!gps)}
+          />
+        </div>
+
+        <div className="setting glass-card">
+          <span>Changer mon email</span>
+          <button className="setting-btn">Modifier</button>
+        </div>
+
+        <div className="setting glass-card">
+          <span>Changer mon mot de passe</span>
+          <button className="setting-btn">Modifier</button>
+        </div>
+
       </div>
 
-      {/* Paramètres */}
-      <div
-        style={{
-          background: "#fff3cd",
-          padding: "15px",
-          borderRadius: "10px",
-          marginBottom: "20px",
-        }}
-      >
-        <h3>Paramètres</h3>
-        <ul>
-          <li>Modifier profil</li>
-          <li>Langue</li>
-          <li>Confidentialité</li>
-          <li>Notifications</li>
-          <li>Support</li>
-        </ul>
+      {/* SECURITY */}
+      <div className="security-section">
+        <h2>Sécurité</h2>
+
+        <div className="setting glass-card danger">
+          <span>Supprimer mon compte</span>
+          <button className="delete-btn">Supprimer</button>
+        </div>
       </div>
 
-      {/* Bouton déconnexion */}
-      <button
-        style={{
-          width: "100%",
-          padding: "15px",
-          background: "crimson",
-          color: "white",
-          borderRadius: "10px",
-          border: "none",
-          cursor: "pointer",
-          fontSize: "16px",
-        }}
-      >
-        Se déconnecter
-      </button>
+      {/* LOGOUT BUTTON */}
+      <button className="logout-btn">Déconnexion</button>
     </div>
   );
 }

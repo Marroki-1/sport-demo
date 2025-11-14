@@ -1,0 +1,245 @@
+/* ----------------------------------------------------- */
+/* PAGE */
+/* ----------------------------------------------------- */
+.dashboard-page {
+  padding: 18px;
+  font-family: "Inter", sans-serif;
+  background: #f5f6fa;
+  min-height: 100vh;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ----------------------------------------------------- */
+/* HEADER */
+/* ----------------------------------------------------- */
+.dash-header {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(200, 200, 200, 0.35);
+}
+
+.dash-header h1 {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.dash-header p {
+  opacity: 0.75;
+  margin: 4px 0 12px 0;
+  font-size: 0.96rem;
+}
+
+/* ----------------------------------------------------- */
+/* ACTIVITY TABS */
+/* ----------------------------------------------------- */
+.activity-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.activity-tab {
+  padding: 9px 20px;
+  border-radius: 25px;
+  border: 1px solid rgba(180, 180, 180, 0.35);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s ease;
+}
+
+.activity-tab:hover {
+  transform: translateY(-2px);
+}
+
+.activity-tab.active {
+  background: linear-gradient(90deg, #a855f7, #3b82f6);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 14px rgba(100, 60, 200, 0.35);
+}
+
+/* ----------------------------------------------------- */
+/* GRID - FIX DESKTOP LAYOUT */
+/* ----------------------------------------------------- */
+.dash-grid {
+  display: grid;
+  gap: 24px;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Grand PC > 1400px */
+@media (max-width: 1300px) {
+  .dash-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablette */
+@media (max-width: 900px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------------------------------------------- */
+/* CARD */
+/* ----------------------------------------------------- */
+.dash-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(200, 200, 200, 0.28);
+  width: 100%;
+}
+
+.dash-card h3 {
+  margin-bottom: 14px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* ----------------------------------------------------- */
+/* STATS */
+/* ----------------------------------------------------- */
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-item {
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(200, 200, 200, 0.35);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+
+/* ----------------------------------------------------- */
+/* PROGRESS */
+/* ----------------------------------------------------- */
+.goal {
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a855f7, #3b82f6);
+  border-radius: 6px;
+}
+
+/* ----------------------------------------------------- */
+/* HEATMAP */
+/* ----------------------------------------------------- */
+.heatmap-map-wrapper {
+  height: 260px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+.heatmap-map {
+  height: 100%;
+  width: 100%;
+}
+
+/* Intensifie la visibilité de la heatmap */
+.leaflet-heatmap-layer,
+.leaflet-heatmap-pane canvas {
+  filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.9))
+          drop-shadow(0 0 14px rgba(255, 40, 40, 0.8))
+          saturate(160%);
+}
+
+/* ----------------------------------------------------- */
+/* EVENTS */
+/* ----------------------------------------------------- */
+.events-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.events-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(200, 200, 200, 0.3);
+  font-size: 0.95rem;
+}
+
+.events-list li:last-child {
+  border-bottom: none;
+}
+
+/* ----------------------------------------------------- */
+/* CTA BUTTON */
+/* ----------------------------------------------------- */
+.dash-map-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  margin-top: 5px;
+  border: none;
+  font-weight: 700;
+  font-size: 1.15rem;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(50, 120, 255, 0.35);
+  transition: 0.25s ease;
+}
+
+.dash-map-btn:hover {
+  transform: translateY(-3px);
+  opacity: 0.92;
+}
+
+/* ----------------------------------------------------- */
+/* MOBILE */
+/* ----------------------------------------------------- */
+@media (max-width: 768px) {
+  .dash-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .dash-card {
+    padding: 18px;
+  }
+
+  .dash-grid {
+    gap: 16px;
+  }
+
+  .heatmap-map-wrapper {
+    height: 220px;
+  }
+}

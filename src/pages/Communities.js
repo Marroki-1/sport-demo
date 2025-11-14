@@ -1,71 +1,152 @@
-import { communities } from "../data/fakeData";
+import { useState } from "react";
+import { groups } from "../data/fakeCommunities";
+import { fakeUsers } from "../data/fakeUsers";
+import "./Communities.css";
 
 function Communities() {
+  const [friends, setFriends] = useState([]);
+  const [activeChat, setActiveChat] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+
+  function addFriend(user) {
+    if (!friends.find((f) => f.id === user.id)) {
+      setFriends((prev) => [...prev, user]);
+    }
+  }
+
   return (
-    <div style={{ padding: "20px", paddingBottom: "80px" }}>
-      <h2>Communautés</h2>
+    <div className="communities-page">
 
-      {communities.map((community) => (
-        <div
-          key={community.id}
-          style={{
-            background: "#f4f4f4",
-            padding: "15px",
-            borderRadius: "10px",
-            marginBottom: "20px",
-          }}
-        >
-          {/* Titre et infos */}
-          <h3 style={{ marginBottom: "5px" }}>{community.name}</h3>
-          <p style={{ margin: "0 0 10px 0" }}>
-            Activité : <b>{community.activity}</b> <br />
-            Membres : <b>{community.members}</b>
-          </p>
+      {/* SIDEBAR AMIS */}
+      <aside className="friends-sidebar">
+        <h3>Mes amis</h3>
 
-          {/* Règles */}
-          <div style={{ marginBottom: "10px" }}>
-            <h4 style={{ margin: "10px 0 5px 0" }}>Règles :</h4>
-            <ul>
-              {community.rules.map((rule, index) => (
-                <li key={index}>{rule}</li>
-              ))}
-            </ul>
+        {friends.length === 0 && (
+          <p className="empty-friends">Aucun ami ajouté.</p>
+        )}
+
+        {friends.map((f) => (
+          <div key={f.id} className="friend-item">
+            <img src={f.avatar} alt="" />
+            <span>{f.name}</span>
           </div>
+        ))}
+      </aside>
 
-          {/* Chat */}
-          <div
-            style={{
-              background: "#fff",
-              padding: "10px",
-              borderRadius: "8px",
-              marginBottom: "15px",
-            }}
-          >
-            <h4 style={{ marginBottom: "10px" }}>Chat</h4>
-            {community.chat.map((msg, index) => (
-              <div key={index} style={{ marginBottom: "8px" }}>
-                <b>{msg.user} :</b> {msg.message}
+      {/* CONTENU PRINCIPAL */}
+      <div className="communities-content">
+
+        {/* TITRE */}
+        <h1 className="title">Communautés</h1>
+
+        {/* CARROUSEL GROUPES */}
+        <div className="groups-carousel-section">
+          <h2 className="section-title">Groupes recommandés</h2>
+
+          <div className="groups-carousel">
+            {groups.map((g) => (
+              <div
+                key={g.id}
+                className="group-card"
+                onClick={() => setSelectedGroup(g)}
+              >
+                <img src={g.img} alt="" className="group-img" />
+
+                <div className="group-info">
+                  <h3>{g.name}</h3>
+                  <p className="activity">
+                    🏷️ {g.activity} • 👥 {g.members} membres
+                  </p>
+
+                  <div className="tags">
+                    {g.tags.map((t, i) => (
+                      <span key={i} className="tag">{t}</span>
+                    ))}
+                  </div>
+
+                  <p className="preview-chat">💬 {g.previewChat}</p>
+
+                  <button className="join-group-btn">Rejoindre</button>
+                </div>
               </div>
             ))}
           </div>
-
-          {/* Bouton rejoindre */}
-          <button
-            style={{
-              width: "100%",
-              padding: "12px",
-              background: "#111",
-              color: "white",
-              borderRadius: "8px",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Rejoindre la communauté
-          </button>
         </div>
-      ))}
+
+        {/* SUGGESTIONS MEMBRES — CARROUSEL */}
+        <div className="carousel-block">
+          <h2 className="section-title">Suggestions de membres</h2>
+
+          <div className="carousel">
+            {fakeUsers.slice(0, 12).map((u) => (
+              <div className="carousel-user" key={u.id}>
+                <img src={u.avatar} alt="" />
+                <p>{u.name}</p>
+                <small>{u.activity}</small>
+
+                <button onClick={() => addFriend(u)}>Ajouter</button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* LEADERBOARD */}
+        <div className="leaderboard-block">
+          <h2 className="section-title">Leaderboard</h2>
+
+          <div className="leaderboard">
+            {fakeUsers.slice(0, 15).map((u, i) => (
+              <div className="leaderboard-row" key={u.id}>
+                <span className="rank">{i + 1}</span>
+                <img src={u.avatar} alt="" />
+                <span className="name">{u.name}</span>
+                <span className="activity">{u.activity}</span>
+
+                <b className="score">{u.score} pts</b>
+
+                <button className="add-btn" onClick={() => addFriend(u)}>
+                  +
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* CHAT FLOATING BUTTON */}
+      <button className="chat-fab" onClick={() => setActiveChat(!activeChat)}>
+        💬
+      </button>
+
+      {/* CHATBOX */}
+      {activeChat && (
+        <div className="chatbox">
+          <div className="chatbox-header">
+            <h3>Chat Communauté</h3>
+            <button onClick={() => setActiveChat(false)}>✖</button>
+          </div>
+
+          <div className="chatbox-messages">
+            {selectedGroup ? (
+              selectedGroup.chat.map((m, i) => (
+                <div key={i} className="chat-msg">
+                  <b>{m.user}: </b> {m.message}
+                </div>
+              ))
+            ) : (
+              <p className="empty-chat">
+                Sélectionne un groupe pour voir le chat 💬
+              </p>
+            )}
+          </div>
+
+          <input
+            className="chatbox-input"
+            placeholder="Écrire un message..."
+          />
+        </div>
+      )}
     </div>
   );
 }
